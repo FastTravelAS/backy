@@ -35,14 +35,28 @@ namespace :db do
     end
 
     task list: :environment do
-      DB::Backup::List.call
+      list = DB::Backup::List.call
+
+      list.each do |list_item|
+        puts "#{list_item.local? ? "local" : "     "} #{list_item.remote? ? "remote" : "      "} : #{list_item.dump_file}"
+      end
+
+      if list.any?
+        puts
+
+        puts "To restore run db:backup:restore setting DUMP_FILE."
+        puts "Example:"
+        puts "  bundle exec rails db:backup:restore DUMP_FILE=#{list.last.dump_file}"
+      end
     end
 
     task restore: :environment do
-      file_name = ENV["DUMP_FILE"]
+      template_file_name = ENV["DUMP_FILE"]
+      file_name = DB::Backup::List.call.reverse.find { |list_item| list_item.dump_file.starts_with?(template_file_name) }&.dump_file if template_file_name.present?
 
       if file_name.nil?
-        puts "Plese set DUMP_FILE env variable to the local/s3 file to restore from"
+        puts "Plese set DUMP_FILE env variable to the local/s3 file (or prefix) to restore from."
+
         exit
       end
 
