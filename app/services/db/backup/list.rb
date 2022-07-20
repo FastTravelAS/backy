@@ -5,8 +5,8 @@ module DB
         locals = Set.new(Dir.glob(dump_wildcard))
         remotes = Set.new(S3List.call)
 
-        (locals + remotes).sort.each do |file|
-          puts "#{file.in?(locals) ? "local" : "     "} #{file.in?(remotes) ? "remote" : "      "} : #{file}"
+        (locals + remotes).sort.map do |dump_file|
+          OpenStruct.new(local?: dump_file.in?(locals), remote?: dump_file.in?(remotes), dump_file:)
         end
       end
 

@@ -10,6 +10,8 @@ module DB
       end
 
       def call
+        return [] unless s3_configured?
+
         response = s3.list_objects(prefix:, bucket:)
 
         result = response.contents.map(&:key)
