@@ -13,12 +13,22 @@ module DB
 
         print "Loading #{key} from S3 ... "
 
-        begin
-          s3.get_object(response_target: file_name, key:, bucket:)
-        rescue Aws::S3::Errors::NoSuchKey
-          puts "error. No such key #{key}"
+        Tempfile.create(file_name) do |tempfile|
+          response_target = tempfile.path
 
-          exit
+          begin
+            s3.get_object(response_target:, key:, bucket:)
+            File.rename(response_target, file_name)
+          rescue Aws::S3::Errors::NoSuchKey
+            puts "error. No such key #{key}"
+
+            exit
+          ensure
+            if File.exist?(tempfile.path)
+              tempfile.close
+              File.delete(tempfile.path)
+            end
+          end
         end
 
         puts "done"
