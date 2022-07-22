@@ -10,7 +10,8 @@ describe DB::Backup::S3Load do
 
   before do
     allow(Aws::S3::Client).to receive(:new).and_return(s3)
-    allow(s3).to receive(:get_object).with(hash_including(response_target: example_file, key: example_file))
+    allow(File).to receive(:rename).with(anything, example_file).and_return(true)
+    allow(s3).to receive(:get_object).with(hash_including(key: example_file))
   end
 
   it "calls the S3 and returns the file name" do
