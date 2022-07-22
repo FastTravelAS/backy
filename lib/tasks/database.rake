@@ -7,7 +7,9 @@ namespace :db do
     end
 
     task push: :environment do
-      save_to_s3(pg_dump)
+      file_name = pg_dump
+      save_to_s3(file_name)
+      File.delete(file_name) if File.exist?(file_name)
     end
 
     task upload: :environment do
@@ -31,7 +33,7 @@ namespace :db do
         exit
       end
 
-      pg_restore(load_from_s3_if_missing(file_name))
+      load_from_s3_if_missing(file_name)
     end
 
     task list: :environment do
