@@ -21,8 +21,6 @@ module DB
             File.rename(response_target, file_name)
           rescue Aws::S3::Errors::NoSuchKey
             puts "error. No such key #{key}"
-
-            exit
           ensure
             if File.exist?(tempfile.path)
               tempfile.close

@@ -21,7 +21,7 @@ module DB
         else
           puts "error. See #{LOG_FILE}"
 
-          exit
+          return
         end
 
         dump_file

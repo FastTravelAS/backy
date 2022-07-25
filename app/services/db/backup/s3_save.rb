@@ -17,7 +17,7 @@ module DB
         unless File.exist?(file_name)
           puts "error. #{file_name} does not exist"
 
-          exit
+          return
         end
 
         File.open(file_name, "rb") do |body|

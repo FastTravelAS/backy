@@ -17,8 +17,6 @@ module DB
           puts "done"
         else
           puts "error. See #{LOG_FILE}"
-
-          exit
         end
       end
 
