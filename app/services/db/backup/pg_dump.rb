@@ -5,7 +5,7 @@ module DB
       include DBConfig
 
       DUMP_DIR = "db/dump"
-      DUMP_CMD_OPTS = "--no-acl --no-owner"
+      DUMP_CMD_OPTS = "--no-acl --no-owner --no-subscriptions --no-publications"
 
       def call
         FileUtils.mkdir_p(DUMP_DIR)
