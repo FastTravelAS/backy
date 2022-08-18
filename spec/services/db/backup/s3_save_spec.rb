@@ -12,6 +12,7 @@ describe DB::Backup::S3Save do
   before do
     allow(Aws::S3::Client).to receive(:new).and_return(s3)
     allow(s3).to receive(:put_object).with(hash_including(key: example_file, body: example_body))
+    allow(File).to receive(:exist?).and_call_original
     allow(File).to receive(:exist?).with(example_file).and_return(true)
     allow(File).to receive(:open).with(example_file, "rb").and_yield(example_body)
   end
