@@ -19,7 +19,7 @@ module DB
           begin
             s3.get_object(response_target:, key:, bucket:)
             FileUtils.mkdir_p(File.dirname(file_name))
-            File.rename(response_target, file_name)
+            FileUtils.mv(response_target, file_name)
           rescue Aws::S3::Errors::NoSuchKey
             puts "error. No such key #{key}"
           ensure
