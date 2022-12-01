@@ -1,19 +1,21 @@
-module DB
-  module Backup
-    class List < ApplicationService
-      def call
-        locals = Set.new(Dir.glob(dump_wildcard))
-        remotes = Set.new(S3List.call)
+module Rubynor
+  module DB
+    module Backup
+      class List < ApplicationService
+        def call
+          locals = Set.new(Dir.glob(dump_wildcard))
+          remotes = Set.new(S3List.call)
 
-        (locals + remotes).sort.map do |dump_file|
-          OpenStruct.new(local?: dump_file.in?(locals), remote?: dump_file.in?(remotes), dump_file:)
+          (locals + remotes).sort.map do |dump_file|
+            OpenStruct.new(local?: dump_file.in?(locals), remote?: dump_file.in?(remotes), dump_file:)
+          end
         end
-      end
 
-      private
+        private
 
-      def dump_wildcard
-        PgDump::DUMP_DIR + "/*"
+        def dump_wildcard
+          PgDump::DUMP_DIR + "/*"
+        end
       end
     end
   end

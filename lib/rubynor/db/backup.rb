@@ -3,7 +3,7 @@
 require_relative "backup/version"
 
 module Rubynor
-  module Db
+  module DB
     module Backup
       class Error < StandardError; end
       # Your code goes here...
