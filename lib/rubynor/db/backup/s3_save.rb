@@ -1,7 +1,7 @@
 module Rubynor
   module DB
     module Backup
-      class S3Save < ApplicationService
+      class S3Save < Base
         include S3Config
 
         DEFAULT_EXPIRE_AFTER = 1.month

@@ -1,7 +1,7 @@
 module Rubynor
   module DB
     module Backup
-      class S3Load < ApplicationService
+      class S3Load < Base
         include S3Config
 
         def initialize(file_name:, key: nil)

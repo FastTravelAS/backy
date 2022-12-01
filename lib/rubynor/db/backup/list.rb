@@ -1,7 +1,7 @@
 module Rubynor
   module DB
     module Backup
-      class List < ApplicationService
+      class List < Base
         def call
           locals = Set.new(Dir.glob(dump_wildcard))
           remotes = Set.new(S3List.call)

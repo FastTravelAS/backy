@@ -1,7 +1,7 @@
 module Rubynor
   module DB
     module Backup
-      class PgRestore < ApplicationService
+      class PgRestore < Base
         include DBConfig
 
         def initialize(file_name:)

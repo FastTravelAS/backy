@@ -1,7 +1,7 @@
 module Rubynor
   module DB
     module Backup
-      class S3List < ApplicationService
+      class S3List < Base
         include S3Config
 
         DEFAULT_PREFIX = "db/dump/"

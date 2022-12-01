@@ -1,7 +1,7 @@
 module Rubynor
   module DB
     module Backup
-      class PgDump < ApplicationService
+      class PgDump < Base
         include AppConfig
         include DBConfig
 
