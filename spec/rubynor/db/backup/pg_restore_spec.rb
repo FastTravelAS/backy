@@ -1,6 +1,6 @@
-require "./spec/services/db/backup/pg_config_context"
+require "./spec/rubynor/db/backup/pg_config_context"
 
-describe DB::Backup::PgRestore do
+describe Rubynor::DB::Backup::PgRestore do
   subject { -> { described_class.call(**params) } }
 
   include_context "PG Config"
