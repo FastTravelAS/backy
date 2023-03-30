@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe Rubynor::DB::Backup::S3Save do
+RSpec.describe Backy::S3Save do
   subject { -> { described_class.call(**params) } }
 
   let(:params) { {file_name: example_file} }

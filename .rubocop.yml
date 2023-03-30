@@ -1,0 +1,23 @@
+require:
+  - standard
+  - rubocop-rspec
+  - rubocop-performance
+
+inherit_gem:
+  standard: config/base.yml
+
+AllCops:
+  TargetRubyVersion: 3.2
+  NewCops: enable
+
+RSpec:
+  Enabled: true # enable rubocop-rspec cops
+
+RSpec/ExampleLength:
+  Max: 30
+
+RSpec/MultipleExpectations:
+  Max: 5
+
+RSpec/MultipleMemoizedHelpers:
+  Max: 10

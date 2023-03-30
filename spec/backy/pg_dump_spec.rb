@@ -1,6 +1,6 @@
-require "./spec/rubynor/db/backup/pg_config_context"
+require "./spec/backy/pg_config_context"
 
-RSpec.describe Rubynor::DB::Backup::PgDump do
+RSpec.describe Backy::PgDump do
   subject { -> { described_class.call(**params) } }
 
   include_context "PG Config"

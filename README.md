@@ -1,28 +1,16 @@
-# Rubynor::Db::Backup
+# Backy
+![bucky.png](bucky.png)
+<small>Bucky the Backy Beavery</small>
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/rubynor/db/backup`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+Introducing "Backy" - the ultimate database backup gem for Ruby on Rails applications! Safeguard your valuable data with ease, speed, and reliability. Developed with the Rails community in mind, Backy provides a comprehensive solution for handling your database backups, ensuring your information is safe and sound.
 
 ## Installation
 
-Add this line to your application's Gemfile:
-
-```ruby
-gem 'rubynor-db-backup'
-```
-
-And then execute:
-
-    $ bundle install
-
-Or install it yourself as:
-
-    $ gem install rubynor-db-backup
+TODO
 
 ## Usage
 
-TODO: Write usage instructions here
+TODO
 
 ## Development
 
@@ -32,4 +20,4 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/rubynor-db-backup.
+Bug reports and pull requests are welcome on GitHub at https://github.com/rubynor/backy.

@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
-require "rubynor/db/backup"
+require "backy"
+require "timecop"
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure

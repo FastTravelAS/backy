@@ -68,19 +68,19 @@ namespace :db do
     private
 
     def pg_dump
-      DB::Backup::PgDump.call
+      Backy::PgDump.call
     end
 
     def save_to_s3(file_name)
-      DB::Backup::S3Save.call(file_name:)
+      Backy::S3Save.call(file_name:)
     end
 
     def load_from_s3_if_missing(file_name)
-      DB::Backup::S3Load.call(file_name:)
+      Backy::S3Load.call(file_name:)
     end
 
     def pg_restore(file_name)
-      DB::Backup::PgRestore.call(file_name:)
+      Backy::PgRestore.call(file_name:)
     end
   end
 end

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe Rubynor::DB::Backup::S3List do
+RSpec.describe Backy::S3List do
   subject { -> { described_class.call(**params) } }
 
   let(:params) { {} }

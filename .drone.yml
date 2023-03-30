@@ -1,0 +1,13 @@
+kind: pipeline
+type: docker
+name: default
+
+steps:
+  - name: build
+    image: ruby:3.2.1-slim-buster
+    commands:
+      - bundle install --path /bundle
+      - bundle exec rake
+    volumes:
+      - name: gem-cache
+        path: /bundle
