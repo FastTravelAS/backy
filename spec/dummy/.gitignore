@@ -20,3 +20,4 @@ See https://help.github.com/articles/ignoring-files for more about ignoring file
 
 
 /public/assets
+/db/dump/

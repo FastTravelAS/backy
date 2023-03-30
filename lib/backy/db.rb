@@ -11,6 +11,7 @@ module Backy
     def_delegator "Backy.configuration", :pg_database, :database
     def_delegator "Backy.configuration", :pg_username, :username
     def_delegator "Backy.configuration", :pg_password, :password
+    def_delegator "Backy.configuration", :use_parallel?, :use_parallel?
 
     def pg_password_env
       password.present? ? "PGPASSWORD='#{password}' " : ""

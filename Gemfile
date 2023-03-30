@@ -15,4 +15,6 @@ gem "aws-sdk-s3", "~> 1.117"
 
 gem "pg"
 
+gem "thor", "~> 1.2"
+
 gem "puma"

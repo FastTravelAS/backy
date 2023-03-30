@@ -2,7 +2,7 @@
 
 RSpec.describe Backy do
   it "has a version number" do
-    expect(Backy::VERSION).not_to be nil
+    expect(Backy::VERSION).not_to be_nil
   end
 
   it "can be configured" do

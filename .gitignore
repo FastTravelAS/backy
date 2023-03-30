@@ -14,3 +14,6 @@
 .DS_Store
 *.gem
 /spec/dummy/db/dump/*
+/.backyrc
+/db/
+/log/backy.log
