@@ -1,6 +1,6 @@
 # Backy
 ![bucky.png](bucky.png)
-<small>Bucky the Backy Beavery</small>
+<small>Bucky the Backy Beaver</small>
 
 Introducing "Backy" - the ultimate database backup gem for Ruby on Rails applications! Safeguard your valuable data with ease, speed, and reliability. Developed with the Rails community in mind, Backy provides a comprehensive solution for handling your database backups, ensuring your information is safe and sound.
 
