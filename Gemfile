@@ -11,7 +11,6 @@ gem "rspec", "~> 3.0"
 
 gem "standard", "~> 1.3"
 
-# TODO: Move to gemspec
-gem "activesupport", "~> 7.0"
-
 gem "aws-sdk-s3", "~> 1.117"
+
+gem "pg"
