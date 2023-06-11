@@ -1,0 +1,15 @@
+default: &default
+  username: postgres
+  password: postgres
+  host: localhost
+  adapter: postgresql
+  encoding: unicode
+  pool: 5
+
+development:
+  <<: *default
+  database: backy_development
+
+test:
+  <<: *default
+  database: backy_test

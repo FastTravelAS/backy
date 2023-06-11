@@ -1,3 +1,4 @@
+require "spec_helper"
 require "./spec/backy/pg_config_context"
 
 RSpec.describe Backy::PgDump do
