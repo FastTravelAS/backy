@@ -11,7 +11,7 @@ module Backy
     def call
       return [] unless s3_configured?
 
-      response = s3.list_objects(prefix:, bucket:)
+      response = s3.list_objects(prefix: prefix, bucket: bucket)
 
       result = response.contents.map(&:key)
 

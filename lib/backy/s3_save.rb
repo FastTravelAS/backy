@@ -20,7 +20,7 @@ module Backy
       end
 
       File.open(file_name, "rb") do |body|
-        s3.put_object(key:, body:, bucket:, expires:)
+        s3.put_object(key: key, body: body, bucket: bucket, expires: expires)
       end
 
       puts "done"
