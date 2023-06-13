@@ -72,7 +72,7 @@ module Backy
     end
 
     def s3_credentials
-      @credentials ||= Aws::Credentials.new(ENV["S3_ACCESS_KEY"], ENV["S3_SECRET"])
+      @credentials ||= Aws::Credentials.new(s3_access_key, s3_secret)
     end
 
     def bucket
@@ -80,7 +80,7 @@ module Backy
     end
 
     def s3
-      @s3 ||= Aws::S3::Client.new(region:, credentials:)
+      @s3 ||= Aws::S3::Client.new(region: s3_region, credentials: s3_credentials)
     end
 
     def pg_credentials
