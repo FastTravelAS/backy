@@ -14,6 +14,8 @@ require_relative "backy/s3_load"
 require_relative "backy/s3_save"
 require_relative "backy/version"
 
+require_relative "backy/railtie" if defined?(Rails::Railtie)
+
 module Backy
   class Error < StandardError; end
   # Your code goes here...

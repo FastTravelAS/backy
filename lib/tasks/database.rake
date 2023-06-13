@@ -1,6 +1,6 @@
 require "aws-sdk-s3"
 
-namespace :db do
+namespace :backy do
   namespace :backup do
     task dump: :environment do
       pg_dump
