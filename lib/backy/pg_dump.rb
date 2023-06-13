@@ -1,5 +1,5 @@
 module Backy
-  class PgDump < Base
+  class PgDump
     DUMP_DIR = "db/dump"
     DUMP_CMD_OPTS = "--no-acl --no-owner --no-subscriptions --no-publications --exclude-table=awsdms_ddl_audit"
 

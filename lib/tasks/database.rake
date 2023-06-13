@@ -68,19 +68,19 @@ namespace :backy do
     private
 
     def pg_dump
-      Backy::PgDump.call
+      Backy::PgDump.new.call
     end
 
     def save_to_s3(file_name)
-      Backy::S3Save.call(file_name:)
+      Backy::S3Save.new(file_name: file_name).call
     end
 
     def load_from_s3_if_missing(file_name)
-      Backy::S3Load.call(file_name:)
+      Backy::S3Load.new(file_name: file_name).call
     end
 
     def pg_restore(file_name)
-      Backy::PgRestore.call(file_name:)
+      Backy::PgRestore.new(file_name: file_name).call
     end
   end
 end

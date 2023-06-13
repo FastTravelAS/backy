@@ -1,6 +1,6 @@
 module Backy
-  class S3Load < Base
-    include S3Config
+  class S3Load
+    include S3
 
     def initialize(file_name:, key: nil)
       @file_name = file_name

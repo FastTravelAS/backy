@@ -56,7 +56,7 @@ module Backy
     end
 
     def s3_configured?
-      %w[S3_REGION S3_ACCESS_KEY S3_SECRET S3_BUCKET].all? { |key| ENV.key?(key) }
+      [s3_region, s3_access_key, s3_secret, s3_bucket].all?(&:present?)
     end
 
     def s3_region
@@ -75,12 +75,8 @@ module Backy
       @credentials ||= Aws::Credentials.new(s3_access_key, s3_secret)
     end
 
-    def bucket
+    def s3_bucket
       @bucket ||= ENV["S3_BUCKET"]
-    end
-
-    def s3
-      @s3 ||= Aws::S3::Client.new(region: s3_region, credentials: s3_credentials)
     end
 
     def pg_credentials

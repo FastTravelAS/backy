@@ -1,5 +1,5 @@
 module Backy
-  class List < Base
+  class List
     def call
       locals = Set.new(Dir.glob(dump_wildcard))
       remotes = Set.new(S3List.call)

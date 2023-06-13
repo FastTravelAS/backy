@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 RSpec.describe Backy::S3List do
-  subject { -> { described_class.call(**params) } }
+  subject { -> { described_class.new(**params).call } }
 
   let(:params) { {} }
 
@@ -12,10 +12,10 @@ RSpec.describe Backy::S3List do
   before do
     allow(Aws::S3::Client).to receive(:new).and_return(s3)
     allow(s3).to receive(:list_objects).and_return(example_list)
-    allow(ENV).to receive(:key?).with("S3_REGION").and_return(true)
-    allow(ENV).to receive(:key?).with("S3_ACCESS_KEY").and_return(true)
-    allow(ENV).to receive(:key?).with("S3_SECRET").and_return(true)
-    allow(ENV).to receive(:key?).with("S3_BUCKET").and_return(true)
+    allow(ENV).to receive(:[]).with("S3_REGION").and_return(true)
+    allow(ENV).to receive(:[]).with("S3_ACCESS_KEY").and_return(true)
+    allow(ENV).to receive(:[]).with("S3_SECRET").and_return(true)
+    allow(ENV).to receive(:[]).with("S3_BUCKET").and_return(true)
   end
 
   it "returns the file list" do

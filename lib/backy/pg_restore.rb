@@ -1,5 +1,5 @@
 module Backy
-  class PgRestore < Base
+  class PgRestore
     def initialize(file_name:)
       @file_name = file_name
     end

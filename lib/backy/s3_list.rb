@@ -1,6 +1,6 @@
 module Backy
-  class S3List < Base
-    include S3Config
+  class S3List
+    include S3
 
     DEFAULT_PREFIX = "db/dump/"
 

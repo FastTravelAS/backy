@@ -1,7 +1,7 @@
 require "./spec/backy/pg_config_context"
 
 RSpec.describe Backy::PgRestore do
-  subject { -> { described_class.call(**params) } }
+  subject { -> { described_class.new(**params).call } }
 
   include_context "PG Config"
 
