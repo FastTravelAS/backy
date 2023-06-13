@@ -1,7 +1,5 @@
 module Backy
   class Configuration
-    LOG_FILE = "log/db_backup.log"
-
     attr_writer(
       :host,
       :port,
@@ -16,14 +14,6 @@ module Backy
       :s3_secret,
       :s3_bucket
     )
-
-    def self.configure
-      yield(configuration)
-    end
-
-    def self.configuration
-      @configuration ||= Configuration.new
-    end
 
     def host
       @host ||= ActiveRecord::Base.connection_db_config.configuration_hash[:host]
@@ -91,6 +81,16 @@ module Backy
 
     def s3
       @s3 ||= Aws::S3::Client.new(region:, credentials:)
+    end
+
+    def pg_credentials
+      args_string = ""
+
+      args_string << " -U #{username}" if username.present?
+      args_string << " -h #{host}" if host.present?
+      args_string << " -p #{port}" if port.present?
+
+      args_string
     end
   end
 end

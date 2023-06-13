@@ -2,8 +2,7 @@
 
 require "active_support/core_ext/integer/time"
 
-require_relative "backy/app_config"
-require_relative "backy/db_config"
+require_relative "backy/configuration"
 require_relative "backy/base"
 require_relative "backy/list"
 require_relative "backy/pg_dump"
@@ -18,5 +17,14 @@ require_relative "backy/railtie" if defined?(Rails::Railtie)
 
 module Backy
   class Error < StandardError; end
-  # Your code goes here...
+
+  LOG_FILE = "log/db_backup.log"
+
+  def self.configure
+    yield(configuration)
+  end
+
+  def self.configuration
+    @configuration ||= Configuration.new
+  end
 end
