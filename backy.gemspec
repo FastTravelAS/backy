@@ -11,7 +11,7 @@ Gem::Specification.new do |spec|
   spec.summary = "Backy is a powerful and user-friendly database backup gem designed specifically for Ruby on Rails applications. It streamlines the backup process, ensuring your data is safe, secure, and easily retrievable. With its versatile features and easy integration, Backy is the go-to solution for Rails developers looking to protect their valuable information."
   spec.description = "Backy is a comprehensive database backup solution for Ruby on Rails applications, created to help developers manage and safeguard their data with ease. This robust gem offers a wide range of features"
   spec.homepage = "https://rubynor.com"
-  spec.required_ruby_version = ">= 2.6.0"
+  spec.required_ruby_version = ">= 2.2.0"
 
   spec.metadata["homepage_uri"] = spec.homepage
   spec.metadata["source_code_uri"] = "https://github.com/rubynor/backy"
@@ -36,8 +36,8 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rubocop-performance", "~> 1.15"
   spec.add_development_dependency "rubocop-rake", "~> 0.6.0"
   spec.add_development_dependency "timecop", "~> 0.9.6"
-  spec.add_development_dependency "activerecord"
-  spec.add_development_dependency "activesupport"
+  spec.add_development_dependency "activerecord", ">= 4.0"
+  spec.add_development_dependency "activesupport", ">= 4.0"
   # For more information and examples about making a new gem, check out our
   # guide at: https://bundler.io/guides/creating_gem.html
 end

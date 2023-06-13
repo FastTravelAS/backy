@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    backy (0.1.0)
+    backy (0.1.1)
 
 GEM
   remote: https://rubygems.org/
@@ -100,8 +100,8 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
-  activerecord
-  activesupport
+  activerecord (>= 4.0)
+  activesupport (>= 4.0)
   aws-sdk-s3 (~> 1.117)
   backy!
   brakeman (~> 5.4)
