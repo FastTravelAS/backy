@@ -50,11 +50,19 @@ module Backy
     end
 
     def app_name
-      @app_name ||= Rails.application.class.name.split("::").first.underscore
+      if defined?(Rails)
+        @app_name ||= Rails.application.class.name.split("::").first.underscore
+      else
+        @app_name
+      end
     end
 
     def environment
-      @environment ||= Rails.env
+      if defined?(Rails)
+        @environment ||= Rails.env
+      else
+        @environment
+      end
     end
 
     def s3_configured?
