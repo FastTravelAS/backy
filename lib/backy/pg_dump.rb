@@ -1,13 +1,11 @@
 module Backy
   class PgDump
+    include Db
+
     DUMP_DIR = "db/dump"
     DUMP_CMD_OPTS = "--no-acl --no-owner --no-subscriptions --no-publications --exclude-table=awsdms_ddl_audit"
 
     def call
-      pg_password = Backy.configuration.pg_password
-      pg_credentials = Backy.configuration.pg_credentials
-      database = Backy.configuration.database
-
       FileUtils.mkdir_p(DUMP_DIR)
 
       dump_file = "#{DUMP_DIR}/#{database}_#{whoami}@#{hostname}_#{Time.zone.now.strftime("%Y%m%d_%H%M%S")}.sql.gz"

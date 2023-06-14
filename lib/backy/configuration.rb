@@ -1,42 +1,42 @@
 module Backy
   class Configuration
     attr_writer(
-      :host,
-      :port,
-      :database,
-      :username,
-      :password,
+      :pg_host,
+      :pg_port,
+      :pg_database,
+      :pg_username,
       :pg_password,
-      :app_name,
-      :environment,
+      :pg_pg_password,
       :s3_region,
       :s3_access_key,
       :s3_secret,
-      :s3_bucket
+      :s3_bucket,
+      :app_name,
+      :environment
     )
 
-    def host
-      @host ||= ActiveRecord::Base.connection_db_config.configuration_hash[:host]
+    def pg_host
+      @pg_host ||= ActiveRecord::Base.connection_db_config.configuration_hash[:host]
     end
 
-    def port
-      @port ||= ActiveRecord::Base.connection_db_config.configuration_hash[:port]
+    def pg_port
+      @pg_port ||= ActiveRecord::Base.connection_db_config.configuration_hash[:port]
     end
 
-    def database
-      @database ||= ActiveRecord::Base.connection_db_config.configuration_hash[:database]
+    def pg_database
+      @pg_database ||= ActiveRecord::Base.connection_db_config.configuration_hash[:database]
     end
 
-    def username
-      @username ||= ActiveRecord::Base.connection_db_config.configuration_hash[:username]
-    end
-
-    def password
-      @password ||= ActiveRecord::Base.connection_db_config.configuration_hash[:password]
+    def pg_username
+      @pg_username ||= ActiveRecord::Base.connection_db_config.configuration_hash[:username]
     end
 
     def pg_password
-      @pg_password ||= password.present? ? "PGPASSWORD='#{password}' " : ""
+      @pg_password ||= ActiveRecord::Base.connection_db_config.configuration_hash[:password]
+    end
+
+    def pg_pg_password
+      @pg_pg_password ||= pg_password.present? ? "PGPASSWORD='#{pg_password}' " : ""
     end
 
     def app_name
@@ -55,10 +55,6 @@ module Backy
       end
     end
 
-    def s3_configured?
-      [s3_region, s3_access_key, s3_secret, s3_bucket].all?(&:present?)
-    end
-
     def s3_region
       @region ||= ENV["S3_REGION"]
     end
@@ -71,22 +67,8 @@ module Backy
       @s3_secret ||= ENV["S3_SECRET"]
     end
 
-    def s3_credentials
-      @credentials ||= Aws::Credentials.new(s3_access_key, s3_secret)
-    end
-
     def s3_bucket
       @bucket ||= ENV["S3_BUCKET"]
-    end
-
-    def pg_credentials
-      args_string = ""
-
-      args_string << " -U #{username}" if username.present?
-      args_string << " -h #{host}" if host.present?
-      args_string << " -p #{port}" if port.present?
-
-      args_string
     end
   end
 end
