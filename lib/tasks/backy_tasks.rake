@@ -45,9 +45,9 @@ namespace :backy do
     if list.any?
       puts
 
-      puts "To restore run db:backup:restore setting DUMP_FILE."
+      puts "To restore run backy:restore setting DUMP_FILE."
       puts "Example:"
-      puts "  bundle exec rails db:backup:restore DUMP_FILE=#{list.last.dump_file}"
+      puts "  bundle exec rails backy:restore DUMP_FILE=#{list.last.dump_file}"
     end
   end
 
