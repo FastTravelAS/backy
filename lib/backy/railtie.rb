@@ -1,7 +1,7 @@
 module Backy
   class Railtie < Rails::Railtie
     rake_tasks do
-      load "lib/tasks/database.rake"
+      load "tasks/backy_tasks.rake"
     end
   end
 end
