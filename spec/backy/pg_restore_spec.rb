@@ -7,7 +7,7 @@ RSpec.describe Backy::PgRestore do
 
   let(:params) { {file_name: example_file} }
   let(:example_file) { "example/file.sql.gz" }
-  let(:log_file) { "log/db_backup.log" }
+  let(:log_file) { "log/backy.log" }
   let(:cmd) { "(#{pg_password_env}psql -c \"#{terminate_connection_sql};\" #{pg_credentials} #{pg_database}; #{pg_password_env}dropdb #{pg_credentials} #{pg_database}; #{pg_password_env}createdb #{pg_credentials} #{pg_database}; gunzip -c #{example_file} | #{pg_password_env}psql #{pg_credentials} -q -d #{pg_database}) 2>&1 >> #{log_file}" }
 
   before do

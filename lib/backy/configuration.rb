@@ -11,7 +11,8 @@ module Backy
       :s3_secret,
       :s3_bucket,
       :app_name,
-      :environment
+      :environment,
+      :log_file
     )
 
     def pg_host
@@ -34,6 +35,22 @@ module Backy
       @pg_password ||= ActiveRecord::Base.connection_db_config.configuration_hash[:password]
     end
 
+    def s3_region
+      @region ||= ENV["S3_REGION"]
+    end
+
+    def s3_access_key
+      @s3_access_key ||= ENV["S3_ACCESS_KEY"]
+    end
+
+    def s3_secret
+      @s3_secret ||= ENV["S3_SECRET"]
+    end
+
+    def s3_bucket
+      @bucket ||= ENV["S3_BUCKET"]
+    end
+
     def app_name
       if defined?(Rails)
         @app_name ||= Rails.application.class.name.split("::").first.underscore
@@ -50,20 +67,8 @@ module Backy
       end
     end
 
-    def s3_region
-      @region ||= ENV["S3_REGION"]
-    end
-
-    def s3_access_key
-      @s3_access_key ||= ENV["S3_ACCESS_KEY"]
-    end
-
-    def s3_secret
-      @s3_secret ||= ENV["S3_SECRET"]
-    end
-
-    def s3_bucket
-      @bucket ||= ENV["S3_BUCKET"]
+    def log_file
+      @log_file ||= "log/backy.log"
     end
   end
 end
