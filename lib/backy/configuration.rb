@@ -36,7 +36,7 @@ module Backy
     end
 
     def s3_region
-      @region ||= ENV["S3_REGION"]
+      @s3_region ||= ENV["S3_REGION"]
     end
 
     def s3_access_key
@@ -48,7 +48,7 @@ module Backy
     end
 
     def s3_bucket
-      @bucket ||= ENV["S3_BUCKET"]
+      @s3_bucket ||= ENV["S3_BUCKET"]
     end
 
     def app_name
