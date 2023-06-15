@@ -16,23 +16,23 @@ module Backy
     )
 
     def pg_host
-      @pg_host ||= ActiveRecord::Base.connection_db_config.configuration_hash[:host]
+      @pg_host ||= ENV["PG_HOST"]
     end
 
     def pg_port
-      @pg_port ||= ActiveRecord::Base.connection_db_config.configuration_hash[:port]
+      @pg_port ||= ENV["PG_PORT"]
     end
 
     def pg_database
-      @pg_database ||= ActiveRecord::Base.connection_db_config.configuration_hash[:database]
+      @pg_database ||= ENV["PG_DATABASE"]
     end
 
     def pg_username
-      @pg_username ||= ActiveRecord::Base.connection_db_config.configuration_hash[:username]
+      @pg_username ||= ENV["PG_USERNAME"]
     end
 
     def pg_password
-      @pg_password ||= ActiveRecord::Base.connection_db_config.configuration_hash[:password]
+      @pg_password ||= ENV["PG_PASSWORD"]
     end
 
     def s3_region
@@ -52,19 +52,11 @@ module Backy
     end
 
     def app_name
-      if defined?(Rails)
-        @app_name ||= Rails.application.class.name.split("::").first.underscore
-      else
-        @app_name
-      end
+      @app_name ||= "backy"
     end
 
     def environment
-      if defined?(Rails)
-        @environment ||= Rails.env
-      else
-        @environment
-      end
+      @environment ||= "development"
     end
 
     def log_file
