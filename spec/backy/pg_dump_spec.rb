@@ -2,17 +2,16 @@ require "spec_helper"
 require "./spec/backy/pg_config_context"
 
 RSpec.describe Backy::PgDump do
-  subject { -> { described_class.new(**params).call } }
+  subject { -> { described_class.new.call } }
 
   include_context "PG Config"
 
-  let(:params) { {} }
   let(:timestamp) { Time.zone.now }
   let(:whoami) { "test" }
   let(:hostname) { "test-host" }
-  let(:dump_file) { "#{described_class::DUMP_DIR}/#{database}_#{whoami}@#{hostname}_#{timestamp.strftime("%Y%m%d_%H%M%S")}.sql.gz" }
+  let(:dump_file) { "#{described_class::DUMP_DIR}/#{pg_database}_#{whoami}@#{hostname}_#{timestamp.strftime("%Y%m%d_%H%M%S")}.sql.gz" }
   let(:log_file) { "log/db_backup.log" }
-  let(:cmd) { "(#{pg_password}pg_dump #{pg_credentials} #{database} #{described_class::DUMP_CMD_OPTS} | gzip -9 > #{dump_file}) 2>&1 >> #{log_file}" }
+  let(:cmd) { "(#{pg_password_env}pg_dump #{pg_credentials} #{pg_database} #{described_class::DUMP_CMD_OPTS} | gzip -9 > #{dump_file}) 2>&1 >> #{log_file}" }
 
   before do
     Timecop.freeze(timestamp)

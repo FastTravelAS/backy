@@ -6,7 +6,6 @@ module Backy
       :pg_database,
       :pg_username,
       :pg_password,
-      :pg_pg_password,
       :s3_region,
       :s3_access_key,
       :s3_secret,
@@ -33,10 +32,6 @@ module Backy
 
     def pg_password
       @pg_password ||= ActiveRecord::Base.connection_db_config.configuration_hash[:password]
-    end
-
-    def pg_pg_password
-      @pg_pg_password ||= pg_password.present? ? "PGPASSWORD='#{pg_password}' " : ""
     end
 
     def app_name
