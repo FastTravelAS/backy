@@ -1,7 +1,11 @@
+require 'forwardable'
+
 module Backy
   module AppConfig
-    def app_name = @app_name ||= Rails.application.class.name.split("::").first.underscore
+    extend Forwardable
 
-    def environment = @environment ||= Rails.env
+    private
+
+    def_delegators "Backy.configuration", :app_name, :environment, :log_file
   end
 end

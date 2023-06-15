@@ -1,6 +1,6 @@
 module Backy
-  class S3Save < Base
-    include S3Config
+  class S3Save
+    include S3
 
     DEFAULT_EXPIRE_AFTER = 1.month
 
@@ -20,7 +20,7 @@ module Backy
       end
 
       File.open(file_name, "rb") do |body|
-        s3.put_object(key:, body:, bucket:, expires:)
+        s3.put_object(key: key, body: body, bucket: bucket, expires: expires)
       end
 
       puts "done"

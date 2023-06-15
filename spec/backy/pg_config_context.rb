@@ -1,18 +1,21 @@
 RSpec.shared_context "PG Config", shared_context: :metadata do
-  let(:host) { ActiveRecord::Base.connection_db_config.configuration_hash[:host] }
-  let(:port) { ActiveRecord::Base.connection_db_config.configuration_hash[:port] }
-  let(:database) { ActiveRecord::Base.connection_db_config.configuration_hash[:database] }
-  let(:username) { ActiveRecord::Base.connection_db_config.configuration_hash[:username] }
-  let(:password) { ActiveRecord::Base.connection_db_config.configuration_hash[:password] }
-  let(:pg_password) { password.present? ? "PGPASSWORD='#{password}' " : "" }
-  let(:terminate_connection_sql) { "SELECT pg_terminate_backend(pg_stat_activity.pid) FROM pg_stat_activity WHERE pg_stat_activity.datname = '#{database}' AND pid <> pg_backend_pid();" }
-  let(:pg_credentials) do
-    args_string = ""
+  let(:pg_host) { "localhost" }
+  let(:pg_port) { "5432" }
+  let(:pg_password) { "postgres" }
+  let(:pg_username) { "postgres" }
+  let(:pg_database) { "test" }
 
-    args_string << " -U #{username}" if username.present?
-    args_string << " -h #{host}" if host.present?
-    args_string << " -p #{port}" if port.present?
-
-    args_string
+  before do
+    Backy.configure do |config|
+      config.pg_host = pg_host
+      config.pg_port = pg_port
+      config.pg_database = pg_database
+      config.pg_username = pg_username
+      config.pg_password = pg_password
+    end
   end
+
+  let(:pg_password_env) { "PGPASSWORD='#{pg_password}' " }
+  let(:terminate_connection_sql) { "SELECT pg_terminate_backend(pg_stat_activity.pid) FROM pg_stat_activity WHERE pg_stat_activity.datname = '#{pg_database}' AND pid <> pg_backend_pid();" }
+  let(:pg_credentials) { " -U #{pg_username} -h #{pg_host} -p #{pg_port}" }
 end

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 RSpec.describe Backy::S3Load do
-  subject { -> { described_class.call(**params) } }
+  subject { -> { described_class.new(**params).call } }
 
   let(:params) { {file_name: example_file} }
 

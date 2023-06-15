@@ -1,11 +1,11 @@
 module Backy
-  class List < Base
+  class List
     def call
       locals = Set.new(Dir.glob(dump_wildcard))
-      remotes = Set.new(S3List.call)
+      remotes = Set.new(S3List.new.call)
 
       (locals + remotes).sort.map do |dump_file|
-        OpenStruct.new(local?: dump_file.in?(locals), remote?: dump_file.in?(remotes), dump_file:)
+        OpenStruct.new(local?: dump_file.in?(locals), remote?: dump_file.in?(remotes), dump_file: dump_file)
       end
     end
 
