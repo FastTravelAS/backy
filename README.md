@@ -4,9 +4,22 @@
 
 Introducing "Backy" - the ultimate database backup gem for Ruby on Rails applications! Safeguard your valuable data with ease, speed, and reliability. Developed with the Rails community in mind, Backy provides a comprehensive solution for handling your database backups, ensuring your information is safe and sound.
 
-## Installation
+## Installation Rails
 
-TODO
+Add gem to gemfile
+
+gem 'backy'
+
+Create initializer `config/initializers/backy.rb`
+
+```ruby
+Backy.configure do |config|
+  config.s3_access_key = ""
+  config.s3_secret = ""
+  config.s3_bucket = ""
+  config.s3_region = ""
+end
+```
 
 ## Usage
 
