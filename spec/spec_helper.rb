@@ -18,8 +18,3 @@ RSpec.configure do |config|
 end
 
 Time.zone_default = Time.find_zone! "Europe/Stockholm"
-
-db_config_file = File.open('config/database.yml')
-db_config = YAML::load(db_config_file, aliases: true)
-
-ActiveRecord::Base.establish_connection(db_config["test"])
