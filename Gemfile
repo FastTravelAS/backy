@@ -14,3 +14,5 @@ gem "standard", "~> 1.3"
 gem "aws-sdk-s3", "~> 1.117"
 
 gem "pg"
+
+gem "puma"

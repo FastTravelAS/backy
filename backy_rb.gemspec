@@ -36,6 +36,9 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rubocop-performance", "~> 1.15"
   spec.add_development_dependency "rubocop-rake", "~> 0.6.0"
   spec.add_development_dependency "timecop", "~> 0.9.6"
+  spec.add_development_dependency "zlib", "~> 3.0"
+  spec.add_development_dependency "rails", ">= 4.0"
+  spec.add_development_dependency "faker", ">= 3.1"
 
   spec.add_dependency "activerecord", ">= 4.0"
   spec.add_dependency "activesupport", ">= 4.0"

@@ -1,8 +1,8 @@
 require "faker"
 
-100.times do
+5.times.with_index do |index|
   Post.create(
-    title: Faker::Lorem.sentence,
+    title: "BackyPost#{index}",
     body: Faker::Lorem.paragraph
   )
 end
