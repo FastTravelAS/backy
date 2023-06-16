@@ -3,7 +3,7 @@ require "zlib"
 require "stringio"
 
 RSpec.describe "Backy backup system", type: :system do
-  let!(:dummy_app) { File.expand_path("dummy/psql") }
+  let!(:dummy_app) { File.expand_path("spec/dummy") }
 
   before do
     Dir.chdir(dummy_app) do
