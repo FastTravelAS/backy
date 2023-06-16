@@ -3,7 +3,7 @@
 require_relative "lib/backy/version"
 
 Gem::Specification.new do |spec|
-  spec.name = "backy"
+  spec.name = "backy_rb"
   spec.version = Backy::VERSION
   spec.authors = ["Alexey Kharchenko", "Martin Ulleberg", "Pål André Sundt"]
   spec.email = ["akharchenko@gmail.com", "martin.ulleberg@gmail.com", "pal@rubynor.com"]
