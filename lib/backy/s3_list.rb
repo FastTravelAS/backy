@@ -2,16 +2,10 @@ module Backy
   class S3List
     include S3
 
-    DEFAULT_PREFIX = "db/dump/"
-
-    def initialize(prefix: nil)
-      @prefix = prefix || DEFAULT_PREFIX
-    end
-
     def call
       return [] unless s3_configured?
 
-      response = s3.list_objects(prefix: prefix, bucket: bucket)
+      response = s3.list_objects(prefix: folder, bucket: bucket)
 
       result = response.contents.map(&:key)
 
@@ -23,9 +17,5 @@ module Backy
 
       result.sort
     end
-
-    private
-
-    attr_reader :prefix
   end
 end

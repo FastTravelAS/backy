@@ -10,6 +10,7 @@ module Backy
       :s3_access_key,
       :s3_secret,
       :s3_bucket,
+      :s3_folder,
       :app_name,
       :environment,
       :log_file
@@ -49,6 +50,10 @@ module Backy
 
     def s3_bucket
       @s3_bucket ||= ENV["S3_BUCKET"]
+    end
+
+    def s3_folder
+      @s3_folder ||= "db/dump/"
     end
 
     def app_name
