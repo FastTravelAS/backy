@@ -4,6 +4,12 @@ module Backy
   module Db
     extend Forwardable
 
+    def self.included(base)
+      base.define_singleton_method :use_pg_dump_option_if_supported do |option|
+        system("pg_dump --help | grep -q -- '#{option}'") ? option : ""
+      end
+    end
+
     private
 
     def_delegator "Backy.configuration", :pg_host, :host
@@ -24,10 +30,6 @@ module Backy
       args_string << " -p #{port}" if port.present?
 
       args_string
-    end
-
-    def use_pg_dump_option_if_supported(option)
-      system("pg_dump --help | grep -q -- '#{option}'") ? option : ""
     end
   end
 end
