@@ -12,6 +12,7 @@ module Backy
 
       print "Loading #{key} from S3 ... "
 
+      FileUtils.mkdir_p("/tmp/#{File.dirname(file_name)}")
       Tempfile.create(file_name) do |tempfile|
         response_target = tempfile.path
 
