@@ -25,5 +25,9 @@ module Backy
 
       args_string
     end
+
+    def use_pg_dump_option_if_supported(option)
+      system("pg_dump --help | grep -q -- '#{option}'") ? option : ""
+    end
   end
 end

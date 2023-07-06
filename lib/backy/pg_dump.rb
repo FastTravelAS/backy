@@ -4,7 +4,7 @@ module Backy
     include AppConfig
 
     DUMP_DIR = "db/dump"
-    DUMP_CMD_OPTS = "--no-acl --no-owner --no-subscriptions --no-publications --exclude-table=awsdms_ddl_audit"
+    DUMP_CMD_OPTS = "--no-acl --no-owner --exclude-table=awsdms_ddl_audit #{use_pg_dump_option_if_supported('--no-subscriptions')} #{use_pg_dump_option_if_supported('--no-publications')}"
 
     def call
       FileUtils.mkdir_p(DUMP_DIR)
