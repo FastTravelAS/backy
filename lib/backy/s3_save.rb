@@ -19,6 +19,12 @@ module Backy
         return
       end
 
+      unless (File.file?(filename) && File.size(filename) > 25)
+        puts "error. #{file_name} seems to be more or less empty"
+
+        return
+      end
+
       File.open(file_name, "rb") do |body|
         s3.put_object(key: key, body: body, bucket: bucket, expires: expires)
       end
