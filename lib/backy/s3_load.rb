@@ -22,11 +22,6 @@ module Backy
           FileUtils.mv(response_target, file_name)
         rescue Aws::S3::Errors::NoSuchKey
           puts "error. No such key #{key}"
-        ensure
-          if File.exist?(tempfile.path)
-            tempfile.close
-            File.delete(tempfile.path)
-          end
         end
       end
 
