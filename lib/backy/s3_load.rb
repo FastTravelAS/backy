@@ -19,7 +19,7 @@ module Backy
         begin
           s3.get_object(response_target: response_target, key: key, bucket: bucket)
           FileUtils.mkdir_p(File.dirname(file_name))
-          FileUtils.mv(response_target, file_name)
+          FileUtils.cp(response_target, file_name)
         rescue Aws::S3::Errors::NoSuchKey
           puts "error. No such key #{key}"
         end
