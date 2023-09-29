@@ -15,7 +15,7 @@ module Backy
           config.pg_host = ActiveRecord::Base.connection_config[:host]
           config.pg_port = ActiveRecord::Base.connection_config[:port]
           config.pg_database = ActiveRecord::Base.connection_config[:database]
-          config.pg_username = ActiveRecord::Base.connection_config[:username]
+          config.pg_username = ActiveRecord::Base.connection_config[:username] || ActiveRecord::Base.connection_config[:user]
           config.pg_password = ActiveRecord::Base.connection_config[:password]
           config.app_name = Rails.application.class.name.split("::").first.underscore
           config.environment = Rails.env
