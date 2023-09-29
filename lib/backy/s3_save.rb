@@ -19,7 +19,7 @@ module Backy
         return
       end
 
-      unless (File.file?(filename) && File.size(filename) > 25)
+      unless (File.file?(file_name) && File.size(filename) > 25)
         puts "error. #{file_name} seems to be more or less empty"
 
         return
