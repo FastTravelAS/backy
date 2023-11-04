@@ -22,7 +22,7 @@ module Backy
       # Determine if the system is multicore
       multicore = Etc.nprocessors > 1
 
-      use_multicore = ENV["BACKY_USE_MULTICORE"] == "true"
+      use_multicore = ENV["BACKY_USE_PARALLEL"] == "true"
 
       # If pigz is installed and the system is multicore, use parallel dump
       if pigz_installed && multicore && use_multicore
