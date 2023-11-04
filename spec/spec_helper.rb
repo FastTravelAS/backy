@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "backy"
+require "backy_rb"
 require "timecop"
 require "active_support"
 require "active_record"

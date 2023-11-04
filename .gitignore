@@ -13,3 +13,4 @@
 .idea
 .DS_Store
 *.gem
+/spec/dummy/db/dump/*
