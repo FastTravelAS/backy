@@ -15,11 +15,11 @@ module Backy
       use_multicore = ENV["BACKY_USE_PARALLEL"] == "true"
 
       if pigz_installed && multicore && use_multicore
-        log_message('Using parallel restore with pigz')
+        Logger.log('Using parallel restore with pigz')
         parallel_restore
       else
-        log_message("Pigz not installed or system is not multicore")
-        log_message('Using plain text restore')
+        Logger.log("Pigz not installed or system is not multicore")
+        Logger.log('Using plain text restore')
         plain_text_restore
       end
     end
@@ -31,11 +31,11 @@ module Backy
     def plain_text_restore
       cmd = "(#{pg_password_env}psql -c \"#{terminate_connection_sql};\" #{pg_credentials} #{database}; #{pg_password_env}dropdb #{pg_credentials} #{database}; #{pg_password_env}createdb #{pg_credentials} #{database}; gunzip -c #{file_name} | #{pg_password_env}psql #{pg_credentials} -q -d #{database}) 2>&1 >> #{log_file}"
 
-      log_message("Restoring #{database} from #{file_name} ...")
+      Logger.log("Restoring #{database} from #{file_name} ...")
       if system(cmd)
-        log_message("Database restoration completed successfully.")
+        Logger.log("Database restoration completed successfully.")
       else
-        log_message("Database restoration failed. See #{log_file} for details.")
+        Logger.log("Database restoration failed. See #{log_file} for details.")
       end
     end
 
@@ -50,40 +50,40 @@ module Backy
       # Terminate connections and drop/create database
       terminate_and_recreate_db = "(#{pg_password_env}psql -c \"#{terminate_connection_sql};\" #{pg_credentials} #{database}; #{pg_password_env}dropdb #{pg_credentials} #{database}; #{pg_password_env}createdb #{pg_credentials} #{database}) 2>&1 >> #{log_file}"
 
-      log_message("Terminating connections to #{database}")
+      Logger.log("Terminating connections to #{database}")
       if system(terminate_and_recreate_db)
-        log_message("Database connections terminated and database recreated.")
+        Logger.log("Database connections terminated and database recreated.")
       else
-        log_message("Error during database termination and recreation. See #{log_file}")
+        Logger.log("Error during database termination and recreation. See #{log_file}")
         return
       end
 
       # Decompress and restore
-      log_message("Decompressing #{file_name} into #{dump_dir} ...")
+      Logger.log("Decompressing #{file_name} into #{dump_dir} ...")
       if system(decompress_cmd)
-        log_message("Decompression completed successfully.")
+        Logger.log("Decompression completed successfully.")
 
         # Check the expected file
         unless File.exist?("#{dump_dir}/toc.dat")
-          log_message("toc.dat not found in #{dump_dir}.")
+          Logger.log("toc.dat not found in #{dump_dir}.")
           return
         end
       else
-        log_message("Decompression failed. See #{log_file} for details.")
+        Logger.log("Decompression failed. See #{log_file} for details.")
         return
       end
 
-      log_message("Restoring database from #{dump_dir} ...")
+      Logger.log("Restoring database from #{dump_dir} ...")
       if system(restore_cmd)
-        log_message("Database restoration completed successfully.")
+        Logger.log("Database restoration completed successfully.")
       else
-        log_message("Database restoration failed. See #{log_file} for details.")
+        Logger.log("Database restoration failed. See #{log_file} for details.")
         return
       end
 
-      log_message("Cleanup: Removing #{dump_dir} ...")
+      Logger.log("Cleanup: Removing #{dump_dir} ...")
       FileUtils.rm_rf(dump_dir)
-      log_message("Cleanup completed.")
+      Logger.log("Cleanup completed.")
     end
 
     def terminate_connection_sql
