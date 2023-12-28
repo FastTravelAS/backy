@@ -1,0 +1,17 @@
+# ~/.backyrc
+defaults:
+  use_parallel: true
+  s3:
+    access_key_id: "YOUR_AWS_ACCESS_KEY_ID"
+    secret_access_key: "YOUR_AWS_SECRET_ACCESS_KEY"
+    region: "eu-central-1"
+    bucket: "your-s3-bucket-name"
+  database:
+    adapter: "postgresql"
+    host: "localhost"
+    port: 5432
+    username: "your-db-username"
+    password: "your-db-password"
+    database_name: "your-database-name"
+  local:
+    backup_path: "/path/to/your/local/backup/directory"

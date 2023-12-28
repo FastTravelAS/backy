@@ -1,0 +1,4 @@
+#!/usr/bin/env ruby
+require_relative "../lib/backy_rb"
+
+Backy::CLI.start(ARGV)

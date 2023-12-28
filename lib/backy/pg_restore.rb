@@ -2,7 +2,6 @@ module Backy
   class PgRestore
     include Db
     include AppConfig
-    include Helper
 
     DUMP_DIR = "db/dump"
 

@@ -24,8 +24,8 @@ Gem::Specification.new do |spec|
       (File.expand_path(f) == __FILE__) || f.start_with?(*%w[bin/ test/ spec/ features/ .git .circleci appveyor])
     end
   end
-  spec.bindir = "exe"
-  spec.executables = spec.files.grep(%r{\Aexe/}) { |f| File.basename(f) }
+
+  spec.executables = ["backy"]
   spec.require_paths = ["lib"]
 
   spec.add_development_dependency "rspec", "~> 3.0"

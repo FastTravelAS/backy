@@ -5,7 +5,7 @@ module Backy
       remotes = Set.new(S3List.new.call)
 
       (locals + remotes).sort.map do |dump_file|
-        OpenStruct.new(local?: dump_file.in?(locals), remote?: dump_file.in?(remotes), dump_file: dump_file)
+        OpenStruct.new(local?: locals.include?(dump_file), remote?: remotes.include?(dump_file), dump_file: dump_file)
       end
     end
 
