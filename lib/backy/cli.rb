@@ -20,7 +20,7 @@ module Backy
       file_name = Backy::PgDump.new.call
       save_to_s3(file_name)
       File.delete(file_name) if File.exist?(file_name)
-      Logger.sucess("Dump pushed to S3 and local file deleted.")
+      Logger.success("Dump pushed to S3 and local file deleted.")
     end
 
     desc "upload", "Upload a specific file to S3"
