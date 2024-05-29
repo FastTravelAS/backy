@@ -10,6 +10,7 @@ module Backy
       :s3_access_key,
       :s3_secret,
       :s3_bucket,
+      :s3_prefix,
       :app_name,
       :environment,
       :use_parallel,
@@ -59,6 +60,10 @@ module Backy
 
     def s3_bucket
       @s3_bucket ||= ENV["S3_BUCKET"]
+    end
+
+    def s3_prefix
+      @s3_prefix ||= ENV["S3_PREFIX"].presence || "/db/dump/"
     end
 
     def use_parallel
@@ -113,6 +118,7 @@ module Backy
       @s3_secret = configuration.dig("defaults", "s3", "secret_access_key")
       @s3_region = configuration.dig("defaults", "s3", "region")
       @s3_bucket = configuration.dig("defaults", "s3", "bucket")
+      @s3_prefix = configuration.dig("defaults", "s3", "prefix") || s3_prefix
 
       @pg_host = configuration.dig("defaults", "database", "host")
       @pg_port = configuration.dig("defaults", "database", "port")
