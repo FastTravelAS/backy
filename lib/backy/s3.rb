@@ -11,6 +11,7 @@ module Backy
     def_delegator "Backy.configuration", :s3_secret, :secret
     def_delegator "Backy.configuration", :s3_bucket, :bucket
     def_delegator "Backy.configuration", :s3_access_key, :access_key
+    def_delegator "Backy.configuration", :s3_prefix, :prefix
 
     def s3
       @s3 ||= Aws::S3::Client.new(region: region, credentials: s3_credentials)

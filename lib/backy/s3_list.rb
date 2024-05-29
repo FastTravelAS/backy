@@ -2,12 +2,6 @@ module Backy
   class S3List
     include S3
 
-    DEFAULT_PREFIX = "db/dump/"
-
-    def initialize(prefix: nil)
-      @prefix = prefix || DEFAULT_PREFIX
-    end
-
     def call
       return [] unless s3_configured?
 
@@ -23,9 +17,5 @@ module Backy
 
       result.sort
     end
-
-    private
-
-    attr_reader :prefix
   end
 end
