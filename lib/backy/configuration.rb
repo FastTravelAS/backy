@@ -26,6 +26,20 @@ module Backy
       load_from_file(config_file) if File.exist?(config_file)
     end
 
+    def pg_url=(url)
+      @pg_url = url
+      pg_config = parse_postgres_uri(url)
+      @pg_host = pg_config[:host]
+      @pg_port = pg_config[:port]
+      @pg_username = pg_config[:username]
+      @pg_password = pg_config[:password]
+      @pg_database = pg_config[:database_name]
+    end
+
+    def pg_url
+      @pg_url ||= ENV["PG_URL"]
+    end
+
     def pg_host
       @pg_host ||= ENV["PG_HOST"]
     end
@@ -120,16 +134,34 @@ module Backy
       @s3_bucket = configuration.dig("defaults", "s3", "bucket")
       @s3_prefix = configuration.dig("defaults", "s3", "prefix") || s3_prefix
 
-      @pg_host = configuration.dig("defaults", "database", "host")
-      @pg_port = configuration.dig("defaults", "database", "port")
-      @pg_username = configuration.dig("defaults", "database", "username")
-      @pg_password = configuration.dig("defaults", "database", "password")
-      @pg_database = configuration.dig("defaults", "database", "database_name")
+      @pg_url = configuration.dig("defaults", "database", "pg_url")
+      if @pg_url
+        self.pg_url = @pg_url
+      else
+        @pg_host = configuration.dig("defaults", "database", "host")
+        @pg_port = configuration.dig("defaults", "database", "port")
+        @pg_username = configuration.dig("defaults", "database", "username")
+        @pg_password = configuration.dig("defaults", "database", "password")
+        @pg_database = configuration.dig("defaults", "database", "database_name")
+      end
 
       @app_name = configuration.dig("defaults", "app_name") || "backy"
       @environment = configuration.dig("defaults", "environment") || "development"
       @log_file = configuration.dig("defaults", "log", "file") || default_log_file
       @use_parallel = configuration.dig("defaults", "use_parallel") || false
+    end
+
+    def parse_postgres_uri(uri)
+      parsed_uri = URI.parse(uri)
+
+      {
+        adapter: "postgresql",
+        host: parsed_uri.host,
+        port: parsed_uri.port,
+        username: parsed_uri.user,
+        password: parsed_uri.password,
+        database_name: parsed_uri.path[1..]
+      }
     end
   end
 end
