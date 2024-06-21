@@ -1,8 +1,25 @@
+# Changelog
+
+All notable changes to `Backy` will be documented in this file.
+
 ## [Unreleased]
 
-## [0.1.4] - 2023-12-28
-- Adds CLI
+## [0.1.7] - 2024-06-21
+### Added
+- Support for setting database params via PG_URL
+- Make S3 bucket prefix configurable
 
-## [0.1.0] - 2023-03-30
+## [0.1.6] - 2023-12-28
+### Added
+- Support for parallel pg_dump processes.
+- Support for parallel pg_restore processes.
+- Added CLI
 
-- Initial release
+### Changed
+- Improved performance of the backup process.
+- Rename gem from `backy` to `backy_rb`.
+
+## [0.1.3] - 2023-06-23
+- Initial release of `Backy`.
+- Support for AWS S3 integration.
+- Rails application auto-configuration feature.
