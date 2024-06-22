@@ -7,6 +7,7 @@ Gem::Specification.new do |spec|
   spec.version = Backy::VERSION
   spec.authors = ["Alexey Kharchenko", "Martin Ulleberg", "Pål André Sundt"]
   spec.email = ["akharchenko@gmail.com", "martin.ulleberg@gmail.com", "pal@rubynor.com"]
+  spec.license = "MIT"
 
   spec.summary = "Backy is a powerful and user-friendly database backup gem designed specifically for Ruby on Rails applications. It streamlines the backup process, ensuring your data is safe, secure, and easily retrievable. With its versatile features and easy integration, Backy is the go-to solution for Rails developers looking to protect their valuable information."
   spec.description = "Backy is a comprehensive database backup solution for Ruby on Rails applications, created to help developers manage and safeguard their data with ease. This robust gem offers a wide range of features"

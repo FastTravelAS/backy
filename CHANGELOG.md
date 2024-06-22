@@ -4,6 +4,10 @@ All notable changes to `Backy` will be documented in this file.
 
 ## [Unreleased]
 
+## [0.1.8] - 2024-06-22
+### Fixed
+- Ensure that the dependencies are installed
+
 ## [0.1.7] - 2024-06-21
 ### Added
 - Support for setting database params via PG_URL
