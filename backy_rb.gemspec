@@ -43,6 +43,9 @@ Gem::Specification.new do |spec|
   spec.add_dependency "activerecord", ">= 4.0"
   spec.add_dependency "activesupport", ">= 4.0"
   spec.add_dependency "aws-sdk-s3", ">= 1.117"
+  spec.add_dependency "pg", "~> 1.5"
+  spec.add_dependency "thor", "~> 1.2"
+
   # For more information and examples about making a new gem, check out our
   # guide at: https://bundler.io/guides/creating_gem.html
 end
