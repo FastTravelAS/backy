@@ -80,8 +80,6 @@ module Backy
       @s3_prefix ||= ENV["S3_PREFIX"].presence || "/db/dump/"
     end
 
-
-
     def use_parallel
       @use_parallel ||= ENV["BACKY_USE_PARALLEL"] == "true"
     end
