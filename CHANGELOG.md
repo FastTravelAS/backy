@@ -3,6 +3,12 @@
 All notable changes to `Backy` will be documented in this file.
 
 ## [Unreleased]
+### Added
+- Support for turning off replication
+- Added support for config by environment in .backyrc
+
+### Changed
+- Breaking change; Change in config keys 
 
 ## [0.1.8] - 2024-06-22
 ### Fixed
