@@ -1,5 +1,6 @@
 require "fileutils"
 require "etc"
+require "open3"
 
 module Backy
   class PgDump
@@ -13,6 +14,15 @@ module Backy
       FileUtils.mkdir_p(DUMP_DIR)
       Logger.log("Starting backy for #{database}")
 
+      if replica? && pause_replication?
+        if pause_replication
+          Logger.log("Replication paused.")
+        else
+          Logger.error("Failed to pause replication. Aborting backup.")
+          return
+        end
+      end
+
       if use_parallel?
         Logger.log("Using multicore dump with pigz")
         parallel_backup
@@ -20,13 +30,21 @@ module Backy
         Logger.log("Using single core dump")
         plain_text_backup
       end
+
+      if replica? && pause_replication?
+        if resume_replication
+          Logger.log("Replication resumed.")
+        else
+          Logger.error("Failed to resume replication. Manual intervention required.")
+        end
+      end
     end
 
     private
 
     def plain_text_backup
       timestamp = Time.now.strftime("%Y%m%d_%H%M%S")
-      dump_file = "#{DUMP_DIR}/#{database}_#{whoami}@#{hostname}_single_#{timestamp}.sql.gz"
+      dump_file = "#{DUMP_DIR}/#{database}_#{whoami}@#{hostname}_#{timestamp}.sql.gz"
 
       cmd = "(#{pg_password_env}pg_dump #{pg_credentials} #{database} #{DUMP_CMD_OPTS} | gzip -9 > #{dump_file}) 2>&1 >> #{log_file}"
 
@@ -47,7 +65,7 @@ module Backy
       dump_dir = "#{DUMP_DIR}/#{database}_dump_parallel_#{timestamp}"
       dump_file = "#{dump_dir}.tar.gz"
 
-      pg_dump_cmd = "pg_dump -Z0 -j #{Etc.nprocessors} -Fd #{database} -f #{dump_dir} #{pg_credentials} #{DUMP_CMD_OPTS}"
+      pg_dump_cmd = "#{pg_password_env}pg_dump -Z0 -j #{Etc.nprocessors} -Fd #{database} -f #{dump_dir} #{pg_credentials} #{DUMP_CMD_OPTS}"
       tar_cmd = "tar -cf - #{dump_dir} | pigz -p #{Etc.nprocessors} > #{dump_file}"
       cleanup_cmd = "rm -rf #{dump_dir}"
 
@@ -88,6 +106,44 @@ module Backy
 
     def whoami
       @whoami ||= `whoami`.strip
+    end
+
+    def pause_replication
+      query = "SELECT pg_wal_replay_pause();"
+      success, _output = execute_sql(query)
+      success
+    end
+
+    def resume_replication
+      query = "SELECT pg_wal_replay_resume();"
+      success, _output = execute_sql(query)
+      success
+    end
+
+    def execute_sql(query)
+      command = %(#{pg_password_env}psql #{pg_credentials} -d #{database} -c "#{query}")
+      output = ""
+      Open3.popen3(command) do |_stdin, stdout, stderr, wait_thr|
+        while (line = stdout.gets)
+          output << line
+        end
+        while (line = stderr.gets)
+          puts "Error: #{line}"
+        end
+        exit_status = wait_thr.value
+        [exit_status.success?, output]
+      end
+    end
+
+    def replica?
+      query = "SELECT pg_is_in_recovery();"
+      success, output = execute_sql(query)
+      if success && output.include?("t")
+        Logger.log("Database is a replica.")
+        true
+      else
+        false
+      end
     end
   end
 end

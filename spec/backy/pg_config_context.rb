@@ -7,6 +7,8 @@ RSpec.shared_context "PG Config", shared_context: :metadata do
 
   before do
     Backy.configure do |config|
+      config.use_parallel = false
+      config.pause_replication = false
       config.pg_host = pg_host
       config.pg_port = pg_port
       config.pg_database = pg_database

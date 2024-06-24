@@ -10,7 +10,7 @@ RSpec.describe Backy::PgDump do
   let(:whoami) { "test" }
   let(:hostname) { "test-host" }
   let(:dump_file) { "#{described_class::DUMP_DIR}/#{pg_database}_#{whoami}@#{hostname}_#{timestamp.strftime("%Y%m%d_%H%M%S")}.sql.gz" }
-  let(:log_file) { "log/backy.log" }
+  let(:log_file) { "./log/backy.log" }
   let(:cmd) { "(#{pg_password_env}pg_dump #{pg_credentials} #{pg_database} #{described_class::DUMP_CMD_OPTS} | gzip -9 > #{dump_file}) 2>&1 >> #{log_file}" }
 
   before do

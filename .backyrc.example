@@ -1,17 +1,33 @@
 # ~/.backyrc
-defaults:
+shared:
   use_parallel: true
-  s3:
-    access_key_id: "YOUR_AWS_ACCESS_KEY_ID"
-    secret_access_key: "YOUR_AWS_SECRET_ACCESS_KEY"
-    region: "eu-central-1"
-    bucket: "your-s3-bucket-name"
-  database:
-    adapter: "postgresql"
-    host: "localhost"
-    port: 5432
-    username: "your-db-username"
-    password: "your-db-password"
-    database_name: "your-database-name"
-  local:
-    backup_path: "/path/to/your/local/backup/directory"
+  pause_replication: true
+  s3_access_key: "YOUR_AWS_ACCESS_KEY_ID"
+  s3_secret: "YOUR_AWS_SECRET_ACCESS_KEY"
+  s3_region: "eu-central-1"
+  s3_bucket: "your-s3-bucket-name"
+  s3_prefix: "./db/dump/"
+  pg_host: "localhost"
+  pg_port: 5432
+  pg_username: "your-db-username"
+  pg_password: "your-db-password"
+  pg_database: "your-database-name"
+  app_name: "backy"
+  environment: "development"
+  log_file: "./log/backy.log"
+  local_backup_path: "/path/to/your/local/backup/directory"
+
+production:
+  pg_host: "production-host"
+  s3_bucket: "production-s3-bucket-name"
+  log_file: "./log/production_backy.log"
+
+staging:
+  pg_host: "staging-host"
+  s3_bucket: "staging-s3-bucket-name"
+  log_file: "./log/staging_backy.log"
+
+development:
+  pg_host: "localhost"
+  s3_bucket: "development-s3-bucket-name"
+  log_file: "./log/development_backy.log"
