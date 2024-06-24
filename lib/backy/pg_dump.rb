@@ -14,15 +14,17 @@ module Backy
       setup_backup_directory
       log_start
 
+      dump_file = nil
+
       begin
-        handle_replication { backup }
+        handle_replication { dump_file = backup }
       rescue => e
         Logger.error("An error occurred during backup: #{e.message}")
       ensure
-        if replica? && pause_replication?
-          log_replication_resume
-        end
+        log_replication_resume if replica? && pause_replication?
       end
+
+      dump_file
     end
 
     private
@@ -75,6 +77,8 @@ module Backy
       Logger.log("Saving to #{dump_file} ... ")
 
       execute_command(cmd, "error. See #{log_file}")
+
+      dump_file
     end
 
     def parallel_backup
@@ -91,6 +95,8 @@ module Backy
       execute_command(cleanup_cmd, "Cleanup failed. See #{log_file} for details.")
 
       Logger.success("Backup process completed. Output file: #{dump_file}")
+
+      dump_file
     end
 
     def execute_command(cmd, error_message)

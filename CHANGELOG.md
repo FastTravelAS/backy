@@ -3,6 +3,11 @@
 All notable changes to `Backy` will be documented in this file.
 
 ## [Unreleased]
+## [0.2.1] - 2024-06-24
+### Fixed
+- Fix bug where `push` is not working because of missing filename
+
+## [0.2.0] - 2024-06-24
 ### Added
 - Support for turning off replication
 - Added support for config by environment in .backyrc

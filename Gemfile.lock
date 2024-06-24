@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    backy_rb (0.1.8)
+    backy_rb (0.2.1)
       activerecord (>= 4.0)
       activesupport (>= 4.0)
       aws-sdk-s3 (>= 1.117)
