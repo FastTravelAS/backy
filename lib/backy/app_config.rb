@@ -1,4 +1,4 @@
-require 'forwardable'
+require "forwardable"
 
 module Backy
   module AppConfig

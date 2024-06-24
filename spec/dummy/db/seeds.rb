@@ -1,6 +1,6 @@
 require "faker"
 
-5.times.with_index do |index|
+5.times do |index|
   Post.create(
     title: "BackyPost#{index}",
     body: Faker::Lorem.paragraph

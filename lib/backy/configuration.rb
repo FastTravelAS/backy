@@ -85,10 +85,10 @@ module Backy
     def default_log_file
       if Gem.win_platform?
         # Windows default path
-        File.join(Dir.home, "AppData", "Local", "#{app_name}", "log", "#{app_name}.log")
+        File.join(Dir.home, "AppData", "Local", app_name, "log", app_name, ".log")
       else
         # Unix-like systems default path
-        File.join(Dir.home, ".local", "share", "#{app_name}", "log", "#{app_name}.log")
+        File.join(Dir.home, ".local", "share", app_name, "log", app_name, ".log")
       end
     end
 

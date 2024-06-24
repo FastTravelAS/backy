@@ -10,16 +10,16 @@ module Backy
     end
 
     def call
-      pigz_installed = system('which pigz > /dev/null 2>&1')
+      pigz_installed = system("which pigz > /dev/null 2>&1")
       multicore = Etc.nprocessors > 1
       use_multicore = ENV["BACKY_USE_PARALLEL"] == "true"
 
       if pigz_installed && multicore && use_multicore
-        Logger.log('Using parallel restore with pigz')
+        Logger.log("Using parallel restore with pigz")
         parallel_restore
       else
         Logger.log("Pigz not installed or system is not multicore")
-        Logger.log('Using plain text restore')
+        Logger.log("Using plain text restore")
         plain_text_restore
       end
     end

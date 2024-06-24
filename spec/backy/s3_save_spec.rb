@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 RSpec.describe Backy::S3Save do
-  subject { -> { described_class.new(**params).call } }
+  subject(:s3_save) { described_class.new(**params) }
 
   let(:params) { {file_name: example_file} }
 
@@ -18,7 +18,7 @@ RSpec.describe Backy::S3Save do
   end
 
   it "calls the S3 service" do
-    expect { subject.call }.to output("Sending example/file.sql.gz to S3 ... done\n").to_stdout
+    expect { s3_save.call }.to output("Sending example/file.sql.gz to S3 ... done\n").to_stdout
 
     expect(s3).to have_received(:put_object).with(hash_including(key: example_file, body: example_body))
   end

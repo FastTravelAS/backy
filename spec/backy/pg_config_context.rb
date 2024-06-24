@@ -1,10 +1,9 @@
-RSpec.shared_context "PG Config", shared_context: :metadata do
+RSpec.shared_context "with config", shared_context: :metadata do
   let(:pg_host) { "localhost" }
   let(:pg_port) { "5432" }
   let(:pg_password) { "postgres" }
   let(:pg_username) { "postgres" }
   let(:pg_database) { "test" }
-
   before do
     Backy.configure do |config|
       config.use_parallel = false
@@ -14,6 +13,12 @@ RSpec.shared_context "PG Config", shared_context: :metadata do
       config.pg_database = pg_database
       config.pg_username = pg_username
       config.pg_password = pg_password
+
+      config.s3_access_key = "test-access-key"
+      config.s3_secret = "test-secret-key"
+      config.s3_region = "eu-central-1"
+      config.s3_bucket = "test-bucket-name"
+      config.s3_prefix = "./db/dump/"
     end
   end
 

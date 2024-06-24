@@ -1,5 +1,5 @@
 require "aws-sdk-s3"
-require 'forwardable'
+require "forwardable"
 
 module Backy
   module S3
