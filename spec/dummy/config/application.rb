@@ -10,7 +10,6 @@ Bundler.require(*Rails.groups)
 
 module Psql
   class Application < Rails::Application
-
     config.active_record.legacy_connection_handling = false
     config.eager_load = false
   end

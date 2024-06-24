@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 RSpec.describe Backy::S3Load do
-  subject { -> { described_class.new(**params).call } }
+  subject(:s3_load) { described_class.new(**params) }
 
   let(:params) { {file_name: example_file} }
 
@@ -15,6 +15,6 @@ RSpec.describe Backy::S3Load do
   end
 
   it "calls the S3 and returns the file name" do
-    expect { expect(subject.call).to eq(example_file) }.to output("Loading example/file.sql.gz from S3 ... done\n").to_stdout
+    expect { expect(s3_load.call).to eq(example_file) }.to output("Loading example/file.sql.gz from S3 ... done\n").to_stdout
   end
 end

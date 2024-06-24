@@ -8,7 +8,8 @@ All notable changes to `Backy` will be documented in this file.
 - Added support for config by environment in .backyrc
 
 ### Changed
-- Breaking change; Change in config keys 
+- Breaking change; Change in config keys
+- Internal refactoring
 
 ## [0.1.8] - 2024-06-22
 ### Fixed
