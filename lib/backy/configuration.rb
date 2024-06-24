@@ -1,29 +1,44 @@
+require "fileutils"
+require "etc"
+require "open3"
+require "yaml"
+require "uri"
+
 module Backy
   class Configuration
-    attr_writer(
-      :pg_host,
-      :pg_port,
-      :pg_database,
-      :pg_username,
-      :pg_password,
-      :s3_region,
-      :s3_access_key,
-      :s3_secret,
-      :s3_bucket,
-      :s3_prefix,
-      :app_name,
-      :environment,
-      :use_parallel,
-      :log_file
-    )
+    DEFAULTS = {
+      pg_host: nil,
+      pg_port: nil,
+      pg_database: nil,
+      pg_username: nil,
+      pg_password: nil,
+      s3_region: nil,
+      s3_access_key: nil,
+      s3_secret: nil,
+      s3_bucket: nil,
+      s3_prefix: "./db/dump/",
+      app_name: "backy",
+      environment: "development",
+      use_parallel: false,
+      pause_replication: true,
+      log_file: "./log/backy.log",
+      local_backup_path: nil
+    }.freeze
+
+    CONFIG_FILE_NAME = ".backyrc"
+
+    attr_accessor(*DEFAULTS.keys)
+
+    def initialize
+      DEFAULTS.each do |key, value|
+        instance_variable_set("@#{key}", value)
+      end
+    end
 
     def load
-      local_config_file = File.join(Dir.pwd, '.backyrc')
-      global_config_file = File.join(Dir.home, '.backyrc')
+      load_config_file
 
-      config_file = File.exist?(local_config_file) ? local_config_file : global_config_file
-      Logger.log("Loading configuration from #{config_file}...") if File.exist?(config_file)
-      load_from_file(config_file) if File.exist?(config_file)
+      load_from_env
     end
 
     def pg_url=(url)
@@ -40,52 +55,12 @@ module Backy
       @pg_url ||= ENV["PG_URL"]
     end
 
-    def pg_host
-      @pg_host ||= ENV["PG_HOST"]
-    end
-
-    def pg_port
-      @pg_port ||= ENV["PG_PORT"]
-    end
-
-    def pg_database
-      @pg_database ||= ENV["PG_DATABASE"]
-    end
-
-    def pg_username
-      @pg_username ||= ENV["PG_USERNAME"]
-    end
-
-    def pg_password
-      @pg_password ||= ENV["PG_PASSWORD"]
-    end
-
-    def s3_region
-      @s3_region ||= ENV["S3_REGION"]
-    end
-
-    def s3_access_key
-      @s3_access_key ||= ENV["S3_ACCESS_KEY"]
-    end
-
-    def s3_secret
-      @s3_secret ||= ENV["S3_SECRET"]
-    end
-
-    def s3_bucket
-      @s3_bucket ||= ENV["S3_BUCKET"]
-    end
-
-    def s3_prefix
-      @s3_prefix ||= ENV["S3_PREFIX"].presence || "/db/dump/"
-    end
-
-    def use_parallel
-      @use_parallel ||= ENV["BACKY_USE_PARALLEL"] == "true"
-    end
-
     def use_parallel?
       use_parallel && pigz_installed && multicore
+    end
+
+    def pause_replication?
+      pause_replication
     end
 
     # Detect if pigz binary is available
@@ -99,14 +74,6 @@ module Backy
     # Determine if the system is multicore
     def multicore
       @multicore ||= Etc.nprocessors > 1
-    end
-
-    def app_name
-      @app_name ||= ENV["APP_NAME"].presence || "backy"
-    end
-
-    def environment
-      @environment ||= "development"
     end
 
     def log_file
@@ -125,30 +92,55 @@ module Backy
       end
     end
 
+    def load_config_file
+      local_config_file = File.join(Dir.pwd, CONFIG_FILE_NAME)
+      global_config_file = File.join(Dir.home, CONFIG_FILE_NAME)
+
+      config_file = File.exist?(local_config_file) ? local_config_file : global_config_file
+      if File.exist?(config_file)
+        Logger.log("Loading configuration from #{config_file}...")
+        load_from_file(config_file)
+      end
+    end
+
     def load_from_file(file_path)
       configuration = YAML.load_file(file_path)
 
-      @s3_access_key = configuration.dig("defaults", "s3", "access_key_id")
-      @s3_secret = configuration.dig("defaults", "s3", "secret_access_key")
-      @s3_region = configuration.dig("defaults", "s3", "region")
-      @s3_bucket = configuration.dig("defaults", "s3", "bucket")
-      @s3_prefix = configuration.dig("defaults", "s3", "prefix") || s3_prefix
+      shared_config = configuration.fetch("shared", {})
+      environment_config = configuration.fetch(environment, {})
 
-      @pg_url = configuration.dig("defaults", "database", "pg_url")
-      if @pg_url
-        self.pg_url = @pg_url
-      else
-        @pg_host = configuration.dig("defaults", "database", "host")
-        @pg_port = configuration.dig("defaults", "database", "port")
-        @pg_username = configuration.dig("defaults", "database", "username")
-        @pg_password = configuration.dig("defaults", "database", "password")
-        @pg_database = configuration.dig("defaults", "database", "database_name")
+      merged_config = deep_merge(shared_config, environment_config)
+
+      apply_config(merged_config)
+    end
+
+    def apply_config(config)
+      config.each do |key, value|
+        instance_variable_set("@#{key}", value) if respond_to?("#{key}=")
       end
 
-      @app_name = configuration.dig("defaults", "app_name") || "backy"
-      @environment = configuration.dig("defaults", "environment") || "development"
-      @log_file = configuration.dig("defaults", "log", "file") || default_log_file
-      @use_parallel = configuration.dig("defaults", "use_parallel") || false
+      self.pg_url = @pg_url if @pg_url
+    end
+
+    def load_from_env
+      ENV.each do |key, value|
+        case key
+        when "PG_HOST" then @pg_host = value
+        when "PG_PORT" then @pg_port = value
+        when "PG_DATABASE" then @pg_database = value
+        when "PG_USERNAME" then @pg_username = value
+        when "PG_PASSWORD" then @pg_password = value
+        when "S3_REGION" then @s3_region = value
+        when "S3_ACCESS_KEY" then @s3_access_key = value
+        when "S3_SECRET" then @s3_secret = value
+        when "S3_BUCKET" then @s3_bucket = value
+        when "S3_PREFIX" then @s3_prefix = value
+        when "APP_NAME" then @app_name = value
+        when "BACKY_USE_PARALLEL" then @use_parallel = value == "true"
+        when "BACKY_PAUSE_REPLICATION" then @pause_replication = value == "true"
+        when "LOCAL_BACKUP_PATH" then @local_backup_path = value
+        end
+      end
     end
 
     def parse_postgres_uri(uri)
@@ -162,6 +154,18 @@ module Backy
         password: parsed_uri.password,
         database_name: parsed_uri.path[1..]
       }
+    end
+
+    def deep_merge(hash1, hash2)
+      merged = hash1.dup
+      hash2.each do |key, value|
+        merged[key] = if value.is_a?(Hash) && hash1[key].is_a?(Hash)
+          deep_merge(hash1[key], value)
+        else
+          value
+        end
+      end
+      merged
     end
   end
 end

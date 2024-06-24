@@ -1,4 +1,4 @@
-require 'forwardable'
+require "forwardable"
 
 module Backy
   module Db
@@ -12,6 +12,7 @@ module Backy
     def_delegator "Backy.configuration", :pg_username, :username
     def_delegator "Backy.configuration", :pg_password, :password
     def_delegator "Backy.configuration", :use_parallel?, :use_parallel?
+    def_delegator "Backy.configuration", :pause_replication?, :pause_replication?
 
     def pg_password_env
       password.present? ? "PGPASSWORD='#{password}' " : ""
