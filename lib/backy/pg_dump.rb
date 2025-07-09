@@ -15,13 +15,15 @@ module Backy
       log_start
 
       dump_file = nil
+      @replication_resumed = false
 
       begin
         handle_replication { dump_file = backup }
       rescue => e
         Logger.error("An error occurred during backup: #{e.message}")
       ensure
-        log_replication_resume if replica? && pause_replication?
+        # Only resume if not already resumed (single core path resumes early)
+        log_replication_resume if replica? && pause_replication? && !@replication_resumed
       end
 
       dump_file
@@ -63,6 +65,7 @@ module Backy
     def log_replication_resume
       if resume_replication
         Logger.log("Replication resumed.")
+        @replication_resumed = true
       else
         Logger.error("Failed to resume replication. Manual intervention required.")
       end
@@ -70,13 +73,46 @@ module Backy
 
     def plain_text_backup
       timestamp = current_timestamp
-      dump_file = "#{DUMP_DIR}/#{database}_#{whoami}@#{hostname}_#{timestamp}.sql.gz"
+      temp_dump_file = "#{DUMP_DIR}/#{database}_#{whoami}@#{hostname}_#{timestamp}.sql"
+      dump_file = "#{temp_dump_file}.gz"
 
-      cmd = "(#{pg_password_env}pg_dump #{pg_credentials} #{database} #{DUMP_CMD_OPTS} | gzip -9 > #{dump_file}) 2>&1 >> #{log_file}"
-
-      Logger.log("Saving to #{dump_file} ... ")
-
-      execute_command(cmd, "error. See #{log_file}")
+      # First, dump the database without compression
+      dump_cmd = "(#{pg_password_env}pg_dump #{pg_credentials} #{database} #{DUMP_CMD_OPTS} > #{temp_dump_file}) 2>&1 >> #{log_file}"
+      
+      Logger.log("Dumping database to #{temp_dump_file} ... ")
+      
+      if system(dump_cmd)
+        Logger.success("Database dump completed")
+        
+        # Resume replication immediately after dump completes
+        if replica? && pause_replication?
+          log_replication_resume
+        end
+        
+        # Now compress the dump file
+        Logger.log("Compressing dump file ... ")
+        
+        # Check if pigz is available for single-threaded but faster compression
+        if system("which pigz > /dev/null 2>&1")
+          compression_cmd = "pigz -1 < #{temp_dump_file} > #{dump_file}"
+          Logger.log("Using pigz for faster compression")
+        else
+          compression_cmd = "gzip -1 < #{temp_dump_file} > #{dump_file}"
+        end
+        
+        if system(compression_cmd)
+          Logger.success("Compression completed")
+          # Remove the uncompressed file
+          FileUtils.rm_f(temp_dump_file)
+        else
+          Logger.error("Compression failed. See #{log_file}")
+          FileUtils.rm_f(temp_dump_file)
+          return nil
+        end
+      else
+        Logger.error("Database dump failed. See #{log_file}")
+        return nil
+      end
 
       dump_file
     end
