@@ -3,6 +3,11 @@
 All notable changes to `Backy` will be documented in this file.
 
 ## [Unreleased]
+
+## [0.2.2] - 2025-01-25
+### Fixed
+- Add Ruby 3.4 compatibility fix for ActiveSupport < 7.1
+
 ## [0.2.1] - 2024-06-24
 ### Fixed
 - Fix bug where `push` is not working because of missing filename

@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+# Ruby 3.4+ compatibility fix for ActiveSupport < 7.1
+require 'logger' if RUBY_VERSION >= '3.4.0'
+
 require "active_support"
 require "active_support/core_ext/integer/time"
 require "active_support/core_ext/object/blank"

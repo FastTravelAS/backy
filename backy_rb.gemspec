@@ -12,7 +12,7 @@ Gem::Specification.new do |spec|
   spec.summary = "Backy is a powerful and user-friendly database backup gem designed specifically for Ruby on Rails applications. It streamlines the backup process, ensuring your data is safe, secure, and easily retrievable. With its versatile features and easy integration, Backy is the go-to solution for Rails developers looking to protect their valuable information."
   spec.description = "Backy is a comprehensive database backup solution for Ruby on Rails applications, created to help developers manage and safeguard their data with ease. This robust gem offers a wide range of features"
   spec.homepage = "https://rubynor.com"
-  spec.required_ruby_version = ">= 2.2.0"
+  spec.required_ruby_version = ">= 2.5.0"
 
   spec.metadata["homepage_uri"] = spec.homepage
   spec.metadata["source_code_uri"] = "https://github.com/rubynor/backy"
@@ -43,6 +43,9 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency "activerecord", ">= 4.0"
   spec.add_dependency "activesupport", ">= 4.0"
+  
+  # Note: For Ruby 3.4+ compatibility with ActiveSupport < 7.1, 
+  # we include a compatibility fix in lib/backy_rb.rb
   spec.add_dependency "aws-sdk-s3", ">= 1.117"
   spec.add_dependency "pg", "~> 1.5"
   spec.add_dependency "thor", "~> 1.2"

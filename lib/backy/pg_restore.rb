@@ -45,7 +45,7 @@ module Backy
       FileUtils.mkdir_p(dump_dir)
 
       decompress_cmd = "pigz -p #{Etc.nprocessors} -dc #{file_name} | tar -C #{dump_dir} --strip-components 3 -xf -"
-      restore_cmd = "pg_restore -j #{Etc.nprocessors} -Fd -O -d #{database} #{dump_dir}"
+      restore_cmd = "pg_restore -j #{Etc.nprocessors} -Fd -O #{pg_credentials} -d #{database} #{dump_dir}"
 
       # Terminate connections and drop/create database
       terminate_and_recreate_db = "(#{pg_password_env}psql -c \"#{terminate_connection_sql};\" #{pg_credentials} #{database}; #{pg_password_env}dropdb #{pg_credentials} #{database}; #{pg_password_env}createdb #{pg_credentials} #{database}) 2>&1 >> #{log_file}"
